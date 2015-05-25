@@ -1,12 +1,12 @@
 function fetchArray(key){
-	if(localStorage.getItem(key)) {
-		return JSON.parse(localStorage.getItem(key));
-	}
-	return [];
+    if(localStorage.getItem(key)) {
+        return JSON.parse(localStorage.getItem(key));
+    }
+    return [];
 }
 
 function saveArray(key, value){
-	localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
 }
 
 app = new Vue({
@@ -14,7 +14,8 @@ app = new Vue({
     el: '#tasks',
 
     data: {
-        tasks: fetchArray("tasks"),
+        //tasks: fetchArray("tasks"),
+        tasks: todosStorage.fetch(),
 
         newTask: '',
 
@@ -30,9 +31,9 @@ app = new Vue({
     },
 
     ready: function() {
-    	this.$watch("tasks", function(value){
-    		saveArray("tasks", value);
-    	});
+        this.$watch("tasks", function(tasks){
+            todosStorage.save(tasks);
+        }, true);
     },
 
     computed: {

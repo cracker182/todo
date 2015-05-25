@@ -3,97 +3,111 @@
 <!-- Initial Idea from Jeff Way-->
 <html lang="de">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ToDo</title>
-	<link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="img/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-	<link rel="manifest" href="img/manifest.json">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-	<meta name="theme-color" content="#ffffff">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/app.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ToDo</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
 </head>
 
 <body>
+<nav class="top-nav">
+    <div class="container">
+        <div class="nav-wrapper"><a class="page-title">ToDo</a></div>
+    </div>
+</nav>
+<div class="container">
+    <div id="tasks">
 
-<div class="container well">
-<h1>ToDo</h1>
-	<div id="tasks">
+        <form v-on="submit: addTask">
+            <!--<div class="form-group">
+                <input v-model="newTask"
+                    v-el="newTask"
+                    class="form-control"
+                    placeholder="ich muss..."></input>
+            </div>-->
+            <div class="row">
+                <div class="input-field col s12">
+                    <input v-model="newTask" v-el="newTask" id="newTask" type="text">
+                    <label for="newTask">Ich muss...</label>
+                </div>
+            </div>
 
-	<form v-on="submit: addTask">
-			<div class="form-group">
-				<input v-model="newTask"
-					v-el="newTask" 
-					class="form-control" 
-					placeholder="ich muss..."></input>
-
-
-			</div>
-			<button class="btn btn-primary">
+            <button class="btn btn-primary">
                 Neue Aufgabe
             </button>
 
             <button v-on="click: completeAll"
                     class="btn btn-default"
-            >
+                    >
                 Alles erledigt?
             </button>
-		</form>
+        </form>
 
-		<div v-show="remaining.length">
-            <h2>Aufgaben ({{ remaining.length }})</h2>
+        <div v-show="remaining.length">
+            <h3>Aufgaben
+                <small>{{ remaining.length }}</small>
+            </h3>
 
-            <ol class="list-group">
+            <ul class="collection">
                 <li v-repeat="task: remaining"
-                    class="list-group-item"
-                >
+                    class="collection-item"
+                        >
                     <span v-on="dblclick: editTask(task)">{{ task.body }}</span>
 
-                    <button v-on="click: removeTask(task)"><span class="glyphicon glyphicon-remove"></span></button>
-                    <button v-on="click: toggleTaskCompletion(task)"><span class="glyphicon glyphicon-ok"></span></button>
-                    <button v-on="click: editTask(task)"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button v-on="click: removeTask(task)"><span class="medium mdi-action-delete"></span></button>
+                    <button v-on="click: toggleTaskCompletion(task)"><span class="small mdi-action-done"></span>
+                    </button>
+                    <button v-on="click: editTask(task)"><span class="mdi-image-edit"></span></button>
                 </li>
-            </ol>
+            </ul>
         </div>
 
         <div v-if="completions.length">
-            <h2>Erledigt ({{ completions.length }})</h2>
+            <h3>Erledigt <small>{{ completions.length }}</small></h2>
 
-            <ol class="list-group">
+            <ul class="collection">
                 <li v-repeat="task: completions"
-                    class="list-group-item"
-                >
+                    class="collection-item"
+                        >
                     {{ task.body }}
 
-                    <button v-on="click: toggleTaskCompletion(task)"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button v-on="click: toggleTaskCompletion(task)"><span class="mdi-image-edit"></span></button>
                 </li>
-            </ol>
+            </ul>
 
             <button v-on="click: clearCompleted" class="btn btn-danger">Erledigte löschen</button>
         </div>
 
 
-	</div>
+    </div>
 </div>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
 
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js"></script>
-	<script src="js/app.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
 
 </body>
 </html>
